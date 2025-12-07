@@ -1,0 +1,157 @@
+/* Reuse modal styles from Products.css or define globally */
+/* For now, we'll add them here to ensure they work */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.invoice-modal {
+    background-color: var(--bg-secondary);
+    width: 100%;
+    max-width: 600px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.invoice-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+}
+
+.invoice-header h2 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.invoice-header p {
+    margin: 0.25rem 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.invoice-items {
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.invoice-items table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.invoice-items th,
+.invoice-items td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.invoice-items th {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.invoice-items td {
+    color: var(--text-primary);
+}
+
+.invoice-total {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: right;
+    background-color: var(--bg-tertiary);
+}
+
+.invoice-total h3 {
+    margin: 0;
+    color: var(--accent-primary);
+    font-size: 1.5rem;
+}
+
+.invoice-actions {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.invoice-actions button {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.invoice-actions button:first-child {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+.invoice-actions button:last-child {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+.invoice-actions button:hover {
+    transform: translateY(-1px);
+}
+
+/* Stock Info Styles */
+.stock-info {
+    font-size: 0.8rem !important;
+    margin-top: 0.25rem !important;
+    font-weight: 500 !important;
+}
+
+.stock-info.in-stock {
+    color: var(--success) !important;
+}
+
+.stock-info.out-of-stock {
+    color: var(--danger) !important;
+}
+
+@media print {
+    .modal-overlay {
+        position: absolute;
+        background: white;
+    }
+    
+    .invoice-modal {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+    }
+    
+    .invoice-actions {
+        display: none;
+    }
+    
+    body > *:not(.modal-overlay) {
+        display: none;
+    }
+}
