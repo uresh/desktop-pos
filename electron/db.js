@@ -7,6 +7,7 @@ const { app } = require('electron');
 // Default data
 const defaultData = {
     products: [],
+    categories: [],
     sales: [],
     cart: [] // Optional, if we want to persist cart state
 };

@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, ShoppingCart, Package, Settings } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Package, List, Settings, BarChart3 } from 'lucide-react';
 import './Layout.css';
 
 export default function Layout() {
@@ -23,6 +22,16 @@ export default function Layout() {
                         <Package size={20} />
                         <span>Products</span>
                     </NavLink>
+                    <NavLink to="/categories">
+                        <List size={20} />
+                        <span>Categories</span>
+                    </NavLink>
+
+                    <div className="nav-label">Reports</div>
+                    <NavLink to="/reports/sales">
+                        <BarChart3 size={20} />
+                        <span>Sales Report</span>
+                    </NavLink>
                 </nav>
                 <div className="settings-link">
                     <NavLink to="/settings">
@@ -37,6 +46,6 @@ export default function Layout() {
             <main className="content">
                 <Outlet />
             </main>
-        </div>
+        </div >
     );
 }

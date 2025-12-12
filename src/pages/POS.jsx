@@ -4,19 +4,27 @@ import { Search, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
 
 export default function POS() {
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('all');
     const [cart, setCart] = useState([]);
     const [search, setSearch] = useState('');
     const [showInvoice, setShowInvoice] = useState(false);
     const [lastSale, setLastSale] = useState(null);
 
     useEffect(() => {
-        loadProducts();
+        loadData();
     }, []);
 
-    const loadProducts = async () => {
+    const loadData = async () => {
         if (window.api) {
-            const data = await window.api.getProducts();
-            setProducts(data || []);
+            const [productsData, categoriesData] = await Promise.all([
+                window.api.getProducts(),
+                window.api.getCategories()
+            ]);
+            setProducts(productsData || []);
+            // Sort categories by sort_order
+            const sortedCategories = (categoriesData || []).filter(c => c.is_active).sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+            setCategories(sortedCategories);
         }
     };
 
@@ -75,28 +83,50 @@ export default function POS() {
                 setCart([]);
                 setLastSale(sale);
                 setShowInvoice(true);
-                loadProducts(); // Reload to update stock
+                loadData(); // Reload to update stock
             } catch (error) {
                 alert('Checkout failed: ' + error.message);
             }
         }
     };
 
-    const filteredProducts = products.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredProducts = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+        const matchesCategory = selectedCategory === 'all' || p.categoryId === selectedCategory;
+        return matchesSearch && matchesCategory;
+    });
 
     return (
         <div className="pos-container">
             <div className="products-section">
-                <div className="search-bar">
-                    <Search size={20} />
-                    <input
-                        type="text"
-                        placeholder="Search products..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
+                <div className="filter-section">
+                    <div className="search-bar">
+                        <Search size={20} />
+                        <input
+                            type="text"
+                            placeholder="Search products..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="category-tabs">
+                        <button
+                            className={`category-tab ${selectedCategory === 'all' ? 'active' : ''}`}
+                            onClick={() => setSelectedCategory('all')}
+                        >
+                            All
+                        </button>
+                        {categories.map(cat => (
+                            <button
+                                key={cat.id}
+                                className={`category-tab ${selectedCategory === cat.id ? 'active' : ''}`}
+                                onClick={() => setSelectedCategory(cat.id)}
+                            >
+                                {cat.name}
+                            </button>
+                        ))}
+                    </div>
                 </div>
                 <div className="products-grid">
                     {filteredProducts.map(product => (

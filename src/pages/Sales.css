@@ -1,6 +1,206 @@
-/* Reuse modal styles from Products.css or define globally */
-/* For now, we'll add them here to ensure they work */
+.sales-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+    padding: 1.5rem;
+    overflow: hidden;
+}
 
+.sales-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.sales-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.sales-desc {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0 0;
+}
+
+.stats-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 160px;
+}
+
+.stat-icon-wrapper {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--accent-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.sales-controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.date-inputs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.date-field {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.75rem;
+    color: var(--text-primary);
+}
+
+.date-field span {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.date-field input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    outline: none;
+    font-family: inherit;
+    color-scheme: dark;
+}
+
+.search-field {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-field .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+.search-field input {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 1rem 0.5rem 2.25rem;
+    color: var(--text-primary);
+    outline: none;
+}
+
+.search-field input:focus {
+    border-color: var(--accent-primary);
+}
+
+.sales-table-section {
+    flex: 1;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-container {
+    overflow-x: auto;
+    width: 100%;
+    flex: 1;
+}
+
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+.sales-table th {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+}
+
+.sales-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+.sales-table tr:last-child td {
+    border-bottom: none;
+}
+
+.sales-table tr:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.btn-view {
+    padding: 0.25rem 0.75rem;
+    background-color: var(--accent-primary);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    transition: opacity 0.2s;
+}
+
+.btn-view:hover {
+    opacity: 0.9;
+}
+
+.no-data {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+}
+
+/* Modal and Print Styles (Existing) */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -14,6 +214,8 @@
     z-index: 1000;
     backdrop-filter: blur(4px);
 }
+
+/* ... rest of existing modal code ... */
 
 .invoice-modal {
     background-color: var(--bg-secondary);

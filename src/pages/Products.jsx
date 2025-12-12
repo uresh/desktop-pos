@@ -4,19 +4,29 @@ import './Products.css';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: '', price: '', image: '', stock: '' });
+  const [formData, setFormData] = useState({ name: '', price: '', image: '', stock: '', categoryId: '' });
   const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
-    loadProducts();
+    loadData();
   }, []);
 
-  const loadProducts = async () => {
+  const loadData = async () => {
     if (window.api) {
-      const data = await window.api.getProducts();
-      setProducts(data || []);
+      const [productsData, categoriesData] = await Promise.all([
+        window.api.getProducts(),
+        window.api.getCategories()
+      ]);
+      setProducts(productsData || []);
+      setCategories(categoriesData || []);
     }
+  };
+
+  const getCategoryName = (id) => {
+    const category = categories.find(c => c.id === id);
+    return category ? category.name : '-';
   };
 
   const handleSubmit = async (e) => {
@@ -40,11 +50,11 @@ export default function Products() {
         setIsModalOpen(false);
         // Reset state after a short delay to ensure modal is closed
         setTimeout(() => {
-          setFormData({ name: '', price: '', image: '', stock: '' });
+          setFormData({ name: '', price: '', image: '', stock: '', categoryId: '' });
           setEditingId(null);
         }, 100);
 
-        loadProducts();
+        loadData();
         // Removed alert to prevent blocking the UI thread
         console.log(editingId ? 'Product updated successfully!' : 'Product saved successfully!');
       } catch (error) {
@@ -64,7 +74,8 @@ export default function Products() {
       name: product.name,
       price: product.price,
       image: product.image || '',
-      stock: product.stock || 0
+      stock: product.stock || 0,
+      categoryId: product.categoryId || ''
     });
     setIsModalOpen(true);
   };
@@ -73,7 +84,7 @@ export default function Products() {
     if (confirm('Are you sure you want to delete this product?')) {
       if (window.api) {
         await window.api.deleteProduct(id);
-        loadProducts();
+        loadData();
       }
     }
   };
@@ -84,7 +95,7 @@ export default function Products() {
         <h2>Product Management</h2>
         <button className="add-btn" onClick={() => {
           setEditingId(null);
-          setFormData({ name: '', price: '', image: '', stock: '' });
+          setFormData({ name: '', price: '', image: '', stock: '', categoryId: '' });
           setIsModalOpen(true);
         }}>
           <Plus size={20} />
@@ -98,6 +109,7 @@ export default function Products() {
             <tr>
               <th>Image</th>
               <th>Name</th>
+              <th>Category</th>
               <th>Price</th>
               <th>Stock</th>
               <th>Actions</th>
@@ -112,6 +124,7 @@ export default function Products() {
                   </div>
                 </td>
                 <td>{product.name}</td>
+                <td>{getCategoryName(product.categoryId)}</td>
                 <td>${product.price.toFixed(2)}</td>
                 <td>{product.stock || 0}</td>
                 <td>
@@ -143,6 +156,29 @@ export default function Products() {
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
                 />
+              </div>
+              <div className="form-group">
+                <label>Category</label>
+                <select
+                  value={formData.categoryId}
+                  onChange={e => setFormData({ ...formData, categoryId: e.target.value })}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    backgroundColor: 'var(--bg-primary)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius-md)',
+                    color: 'var(--text-primary)',
+                    outline: 'none'
+                  }}
+                >
+                  <option value="">Select Category</option>
+                  {categories.filter(c => c.is_active).map(c => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label>Price ($)</label>
