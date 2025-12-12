@@ -29,8 +29,15 @@
 }
 
 @keyframes slideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .invoice-header {
@@ -136,22 +143,109 @@
 }
 
 @media print {
+    @page {
+        margin: 0;
+        size: auto;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    .modal-overlay,
+    .modal-overlay * {
+        visibility: visible;
+    }
+
     .modal-overlay {
         position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
         background: white;
+        z-index: 9999;
+        display: block !important;
+        padding: 0;
     }
-    
+
     .invoice-modal {
         box-shadow: none;
         border: none;
-        max-width: 100%;
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+        padding: 2mm;
+        animation: none;
+        background: white;
+        color: black;
     }
-    
+
+    .invoice-header {
+        padding: 5px 0;
+        border-bottom: 1px dashed #000;
+        text-align: center;
+    }
+
+    .invoice-header h2 {
+        font-size: 14pt;
+        color: black;
+        margin-bottom: 2mm;
+    }
+
+    .invoice-header p {
+        font-size: 9pt;
+        color: black;
+        margin: 1mm 0;
+    }
+
+    .invoice-items {
+        padding: 2mm 0;
+        overflow: visible;
+    }
+
+    .invoice-items table {
+        width: 100%;
+        font-size: 9pt;
+        color: black;
+    }
+
+    .invoice-items th {
+        color: black;
+        font-weight: bold;
+        border-bottom: 1px dashed #000;
+        padding: 2px 0;
+        font-size: 8pt;
+    }
+
+    .invoice-items td {
+        color: black;
+        padding: 2px 0;
+        border-bottom: none;
+    }
+
+    .invoice-total {
+        padding: 5px 0;
+        border-top: 1px dashed #000;
+        background: transparent;
+        color: black;
+        text-align: right;
+    }
+
+    .invoice-total h3 {
+        font-size: 12pt;
+        color: black;
+    }
+
     .invoice-actions {
-        display: none;
-    }
-    
-    body > *:not(.modal-overlay) {
         display: none;
     }
 }
